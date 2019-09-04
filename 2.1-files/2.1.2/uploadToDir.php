@@ -1,5 +1,5 @@
 <?php
-$uploadsDir = __DIR__ . '/uploads/';
+$uploadsDir = '/uploads';
 $fileName = 'picture';
 if(isset($_POST['upload'])) {
     uploadFileToDir($uploadsDir, $fileName);
