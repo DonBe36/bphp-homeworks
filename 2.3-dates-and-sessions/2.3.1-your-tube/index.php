@@ -9,7 +9,6 @@
         $views = include 'views.php';
         return (int) $views;
     }
-
     /**
      * Функция увеличивает количество просмотров на 1
      *
@@ -21,18 +20,35 @@
         $data = "<?php \r\nreturn {$views};";
         file_put_contents('views.php', $data);
     }
-
     /**
      * Функция проверяет, нужно ли увеличивать число просмотров
      *
      * @return bool
      */
-    function shouldBeIncremented(): bool
+    function shouldBeIncremented()
     {
-        //write your code here
+        session_start();
+        $now = time();
+        if (isset($_SESSION['timepoint'])) {
+            $diff = $now - $_SESSION['timepoint'];
+            if ($diff > 300000) {
+                $_SESSION['timepoint'] = $now;
+                return TRUE;
+            } else {
+                $_SESSION['timepoint'] = $now;
+                return FALSE;
+            }
+        } else {
+            $_SESSION['timepoint'] = $now;
+            return TRUE;
+        }
     }
-
-    //
+    $views = getViews();
+    if (shouldBeIncremented()) {
+        incrementViews($views);
+    } else {
+        $views;
+    }
 ?>
 
 <!DOCTYPE html>
